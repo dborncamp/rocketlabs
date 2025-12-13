@@ -1,0 +1,38 @@
+# Build the static assets using a Node.js image
+FROM node:24 as js-builder
+
+USER daemon
+WORKDIR /app
+
+COPY --chown=daemon:daemon telem-dashboard/ telem-dashboard
+
+RUN cd telem-dashboard && \
+    npm install && \
+    npm run build
+
+# Add python packages and set up the backend
+FROM python:3.14.2-slim as py-builder
+
+COPY telem-dashboard/requirements.txt ./requirements.txt
+
+RUN pip install -r requirements.txt
+
+
+# Build the final image with Python, copy in the static assets
+FROM python:3.14.2-slim as development
+
+# Use a non-root user for better security
+USER daemon
+
+WORKDIR /app
+
+COPY --chown=daemon:daemon telem-dashboard/ telem-dashboard
+COPY --chown=daemon:daemon --from=js-builder /app/telem-dashboard/dist telem-dashboard/dist
+COPY --chown=daemon:daemon --from=py-builder /usr/local/lib/python3.14/site-packages/ /usr/local/lib/python3.14/site-packages/
+COPY --chown=daemon:daemon --from=py-builder /usr/local/bin/ /usr/local/bin/
+
+WORKDIR /app/telem-dashboard/api
+
+EXPOSE 5000
+
+CMD ["gunicorn", "-b", ":5000", "api:app"]
