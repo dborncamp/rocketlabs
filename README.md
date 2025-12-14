@@ -2,13 +2,15 @@
 
 ;tldr
 
+Using Docker (the image is available on Docker Hub):
+
 ```bash
-docker build -t rocketlabs-dashboard:latest -f Dockerfile.yaml .
-docker run -p 5000:5000 rocketlabs-dashboard:latest
+docker run -p 5000:5000 dborncamp/rocketlabs:latest
 ```
 
 visit `http://localhost:5000` to see the application running.
 Dummy example data is included in the container to illustrate the functionality.
+Enjoy!
 
 ---
 
@@ -161,6 +163,39 @@ Pagination is implemented to show 20 entries per page, a new request is made on 
 
 Finally, there is a graph section that uses plotly.js to visualize altitude and velocity over time for a given satellite ID.
 An existing satellite ID must be provided to see the data, however no validation is done to check if the satellite ID exists before making the request at this time.
+
+## Unit Tests
+
+Unit tests are provided for the backend API using PyTest.
+Knowing that RocketLabs uses AI, I allowed AI create the initial tests and then modified them to fit the application better.
+I was surprised at how well it worked, and it saved me a lot of time.
+
+The tests are based on the `unittest` module but can be run using `pytest` for better output formatting.
+To run the tests, ensure you have the `pytest` package installed in your Python environment:
+
+```bash
+pip install pytest
+```
+
+Then, run the tests get into the `telem-dashboard/api` directory and run the tests
+
+```bash
+cd telem-dashboard/api
+```
+
+And either run with pytest:
+
+```bash
+pytest tests/test_api.py -v
+```
+
+Or with python -m unittest:
+
+```bash
+python -m unittest tests/test_api.py -v
+```
+
+See [api/tests/TESTING.md](telem-dashboard/api/tests/TESTING.md) for the full documentation of the test suite.
 
 ## Future Improvements
 

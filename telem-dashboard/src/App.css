@@ -9,13 +9,13 @@
 }
 
 h1 {
-  color: #333;
+  color: rgba(255, 255, 255);
   text-align: center;
   margin-bottom: 2rem;
 }
 
 h2 {
-  color: #555;
+  color: #e6e6e6;
   border-bottom: 2px solid #007bff;
   padding-bottom: 0.5rem;
   margin-top: 2rem;
@@ -32,7 +32,7 @@ section {
 
 /* Form Styles */
 .form-section {
-  background: #f0f7ff;
+  background: rgb(40, 40, 40);
 }
 
 .form-group {
@@ -44,7 +44,7 @@ section {
 .form-group label {
   font-weight: bold;
   margin-bottom: 0.5rem;
-  color: #333;
+  color: #e6e6e6;
 }
 
 .form-group input,
@@ -79,7 +79,7 @@ form button:hover {
 
 /* Filter Styles */
 .filter-section {
-  background: #fff3cd;
+  background: rgb(40, 40, 40);
 }
 
 .filter-group {
@@ -91,7 +91,7 @@ form button:hover {
 .filter-group label {
   font-weight: bold;
   margin-right: 0.5rem;
-  color: #333;
+  color: #e6e6e6;
 }
 
 .filter-group input,
@@ -112,7 +112,7 @@ form button:hover {
 
 /* Table Styles */
 .table-section {
-  background: rgb(25, 25, 25);
+  background: rgb(40, 40, 40);
 }
 
 .table-wrapper {
@@ -149,21 +149,21 @@ table td {
   border-bottom: 1px solid #ddd;
 }
 
-table tbody tr:hover {
-  background: #f5f5f5;
+table tbody tr:nth-child(even) {
+  background: rgb(40, 40, 40);
 }
 
-table tbody tr:nth-child(even) {
-  background: rgb(30, 30, 30);
+table tbody tr:hover {
+  background: #c3c088;
 }
 
 .status-healthy {
-  color: #28a745;
+  color: #11a600;
   font-weight: bold;
 }
 
 .status-critical {
-  color: #dc3545;
+  color: #dc6874;
   font-weight: bold;
 }
 
@@ -213,14 +213,14 @@ table tbody tr:nth-child(even) {
 
 .pagination span {
   font-weight: 600;
-  color: #333;
+  color: white;
   min-width: 200px;
   text-align: center;
 }
 
 /* Graph Styles */
 .graph-section {
-  background: white;
+  background: rgb(40, 40, 40);
 }
 
 .graph-input {
@@ -283,6 +283,7 @@ table tbody tr:nth-child(even) {
 
   h1 {
     font-size: 1.5rem;
+    color: rgba(255, 255, 255);
   }
 
   .filter-group {

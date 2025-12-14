@@ -294,6 +294,7 @@ function App() {
       </section>
 
       {/* Filter Section */}
+      <section className="table-section">
       <section className="filter-section">
         <h2>Filters</h2>
         <div className="filter-group">
@@ -325,7 +326,6 @@ function App() {
       </section>
 
       {/* Table Section */}
-      <section className="table-section">
         <h2>Telemetry Data</h2>
         {loading ? (
           <p>Loading...</p>

@@ -11,39 +11,20 @@ from flask import Flask, request, jsonify
 from datetime import datetime
 import os
 
+import util
+
 app = Flask(__name__, static_folder='../dist', static_url_path='/')
 
 # Database setup
-DATABASE = 'telemetry.db'
+if os.environ.get('DATABASE_LOCATION'):
+    DATABASE = os.environ.get('DATABASE_LOCATION')
+else:
+    DATABASE = 'telemetry.db'
 
 # Initialize database on startup
 
-def init_db():
-    """
-    Initialize the database with the telemetry table.
-    
-    Assume that the database name or schema will never change for this exercise.
-    In an actual production system, you would want to use a more robust system where it would not be instantiating itself.
-    """
-    db = get_db()
-    cursor = db.cursor()
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS telemetry (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            satelliteId TEXT NOT NULL,
-            timestamp TEXT NOT NULL,
-            altitude REAL NOT NULL,
-            velocity REAL NOT NULL,
-            status TEXT NOT NULL
-        )
-    ''')
-    db.commit()
-    db.close()
-
 if not os.path.exists(DATABASE):
-    init_db()
-
-
+    util.init_db()
 
 # Now for the functionality
 
@@ -55,13 +36,6 @@ def clear_trailing():
     rp = request.path 
     if rp != '/' and rp.endswith('/'):
         return redirect(rp[:-1])
-
-def get_db():
-    """Get a database connection."""
-    db = sqlite3.connect(DATABASE)
-    db.row_factory = sqlite3.Row
-    return db
-
 
 def validate_iso(timestamp_str):
     """Validate that a timestamp is in ISO 8601 format."""
@@ -79,7 +53,7 @@ def validate_status(status):
 @app.route('/telemetry', methods=['GET'])
 def get_telemetry():
     """Retrieve telemetry data with optional filtering, sorting, and pagination."""
-    db = get_db()
+    db = util.get_db(DATABASE)
     cursor = db.cursor()
     
     # Get query parameters for filtering
@@ -152,7 +126,7 @@ def get_telemetry():
 @app.route('/telemetry/<int:entry_id>', methods=['GET'])
 def get_telemetry_by_id(entry_id):
     """Retrieve a specific telemetry entry by ID."""
-    db = get_db()
+    db = util.get_db(DATABASE)
     cursor = db.cursor()
     
     cursor.execute('SELECT * FROM telemetry WHERE id = ?', (entry_id,))
@@ -194,7 +168,7 @@ def add_telemetry():
         return jsonify({'error': 'Altitude and velocity must be non-negative.'}), 400
     
     # Now that everything is validated, insert into the database
-    db = get_db()
+    db = util.get_db(DATABASE)
     cursor = db.cursor()
     
     cursor.execute('''
@@ -213,7 +187,7 @@ def add_telemetry():
 @app.route('/telemetry/<int:entry_id>', methods=['DELETE'])
 def delete_telemetry(entry_id):
     """Delete a specific telemetry entry by ID."""
-    db = get_db()
+    db = util.get_db(DATABASE)
     cursor = db.cursor()
     
     cursor.execute('SELECT * FROM telemetry WHERE id = ?', (entry_id,))
