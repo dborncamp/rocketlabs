@@ -12,6 +12,12 @@ visit `http://localhost:5000` to see the application running.
 Dummy example data is included in the container to illustrate the functionality.
 Enjoy!
 
+**Or deploy on Kubernetes using Helm:**
+
+```bash
+helm install rocketlabs ./helm
+```
+
 ---
 
 This is for the RocketLabs code challenge which was given to me on 12/12/2025.
@@ -67,6 +73,12 @@ Request body should include the following fields with their respective data type
 When data is posted, the timestamp should be validated to ensure it is in the correct ISO 8601 format.
 The data will be stored in an SQLite database using a Flask backend for API endpoints.
 At this point, I assume that the status field will only have two possible values: "healthy" and "critical".
+
+## Configuration
+
+Currently, only the database location can be configured using the environment variable `DATABASE`.
+As we will discuss in the Future Improvements at the bottom, more configuration options can be added for a more complete solution.
+That solution would include options to configure via config files, environment variables, and command line arguments.
 
 ### Local Development Setup
 
@@ -200,12 +212,26 @@ python -m unittest tests/test_api.py -v
 
 See [api/tests/TESTING.md](telem-dashboard/api/tests/TESTING.md) for the full documentation of the test suite.
 
+## Deployment
+
+Helm charts are provided to easily deploy the application on Kubernetes.
+The application can be deployed on Kubernetes with Helm.
+By default the charts will use the prebuilt Docker image from Docker Hub: `dborncamp/rocketlabs:latest`.
+This can be changed in the `values.yaml` file to use a different image or tag.
+
+The charts will deploy a deployment, a service, and a service account by default. While only the deployment and service are strictly required to run the application, the service account is included for future use if RBAC permissions are needed (see future improvements below).
+
+While a ServiceAccount is automatically created, no RBAC permissions are required for this application at this time.
+If deploying on an openshift cluster, you may need to adjust the security context constraints and the ServiceAccount with an extra role binding is an easy way to manage that.
+
 ## Future Improvements
 
 - Allow for other status values beyond "healthy" and "critical".
 - Make the dockerfile smaller and more efficient.
   - Break out the frontend and backend into separate containers to allow for better scaling and management.
 - Add authentication and authorization to the API.
+  - Add RBAC roles and role bindings to the Helm charts to manage permissions.
+  - Add integrations with OAuth2 or JWT for secure access to the API.
 - Add configuration options for the backend server (e.g., port, database location debug mode).
 - Implement WebSocket support for real-time telemetry updates.
 - Improve error handling and logging in both frontend and backend.
