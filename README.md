@@ -14,7 +14,7 @@ Enjoy!
 
 ---
 
-This is for the RocketLabs code challenge which was given to me on 12/12/2025/
+This is for the RocketLabs code challenge which was given to me on 12/12/2025.
 The goal for this project is to make an application that models a space ground system by creating a telemetry dashboard.
 It has two components: a backend that simulates a spacecraft sending telemetry data, and a frontend that displays the data.
 
@@ -171,7 +171,10 @@ Knowing that RocketLabs uses AI, I allowed AI create the initial tests and then 
 I was surprised at how well it worked, and it saved me a lot of time.
 
 The tests are based on the `unittest` module but can be run using `pytest` for better output formatting.
-To run the tests, ensure you have the `pytest` package installed in your Python environment:
+
+**Optional:**
+
+To install `pytest` in your Python environment:
 
 ```bash
 pip install pytest
@@ -207,3 +210,4 @@ See [api/tests/TESTING.md](telem-dashboard/api/tests/TESTING.md) for the full do
 - Implement WebSocket support for real-time telemetry updates.
 - Improve error handling and logging in both frontend and backend.
 - Check for existing satellite IDs before making requests to the backend for graphing or give user feedback if no data is found.
+- Add unit tests for the frontend components.
